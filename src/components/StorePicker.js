@@ -4,9 +4,9 @@ import { getFunName } from '../helpers';
 class StorePicker extends React.Component {
     myInput = React.createRef();
 
-    goToStore = event => {
+    goToStore = e => {
         // stop form from subitting
-        event.preventDefault();
+        e.preventDefault();
         // get text from input
         const store = this.myInput.current.value;
         // change the page to /store/whatever-they-entered
