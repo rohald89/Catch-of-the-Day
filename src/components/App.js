@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
@@ -11,6 +12,10 @@ class App extends React.Component{
         fishes: {},
         order: {}
     };
+
+    static propTypes = {
+        match: PropTypes.object
+    }
 
     componentDidMount() {
         const {params} = this.props.match;
@@ -52,6 +57,14 @@ class App extends React.Component{
         this.setState({ fishes });
     }
 
+    deleteFish = (key) => {
+        // copy state
+        const fishes = {...this.state.fishes};
+        // update state
+        fishes[key] = null;
+        this.setState({fishes});
+    }
+
     loadSampleFishes = () => { this.setState({fishes: sampleFishes})}
 
     addToOrder = (key) => {
@@ -59,6 +72,15 @@ class App extends React.Component{
         const order = {...this.state.order}
         // add to the order or update the number in the order
         order[key] = order[key] + 1 || 1;
+        // call setState to update the state object
+        this.setState({ order });
+    }
+
+    removeFromOrder = (key) => {
+        // take a copy of state 
+        const order = {...this.state.order}
+        // remove item from order
+        delete order[key];
         // call setState to update the state object
         this.setState({ order });
     }
@@ -80,8 +102,8 @@ class App extends React.Component{
                     </ul>
                     
                 </div>
-                    <Order fishes={this.state.fishes} order={this.state.order}/>
-                    <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes} updateFish={this.updateFish} fishes={this.state.fishes}/>
+                    <Order fishes={this.state.fishes} order={this.state.order} removeFromOrder={this.removeFromOrder}/>
+                    <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes} updateFish={this.updateFish} deleteFish={this.deleteFish} fishes={this.state.fishes}/>
             </div>
         );
     }
